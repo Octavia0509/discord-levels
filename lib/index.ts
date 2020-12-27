@@ -28,35 +28,25 @@ export function addXP (message: any, userID: string, XP: number) : any {
  * @param {any} message Parameter of your event message
  * @param {object} options Object containing options
  */
-export function leaderboard (client: any, message: any, limit: number) : any {
+export function leaderboard (client: any, message: any) : any {
     if(!client) throw new Error("You must enter a client parameter (discord.js client)");
 
     if(!message) throw new Error("You must enter a message parameter, referring to your 'message' event");
 
-    if(!limit) limit = 10;
-    if(typeof limit !== "number") throw new Error("The limit option must be a Number");
-    if(limit < 0 || limit > 20) throw new Error("Invalid limit.")
-
-    let data = db.all().filter(i => i.ID.startsWith("xp_")).slice(0, limit).sort((a, b) => b.data - a.data);
+    let data = db.all().filter(i => i.ID.startsWith("xp_")).sort((a, b) => b.data - a.data);
     if(data.length < 1) return message.channel.send("It seems that there is no data");
-    let authorRank = data.map(i => i.ID).indexOf(`xp_${message.author.id}`) + 1 || "N/A";
-    data.length = 20
+    let authorRank = data.map(i => i.ID).indexOf(`xp_${message.guild.id}_${message.author.id}`) + 1 || "N/A";
+
     let leaderboard = [];
-    
     for (let i in data) {
         let id = data[i].ID.split("_")[2];
         let user = client.users.cache.get(id);
-        user ? user.tag : "Unknown#0000";
-        let rank = data.indexOf(data[i]) + 1;
-        let level = db.get(`level_${message.guild.id}_${i}`);
-        level ? level.data : "Unknown";
-        let xp = data[i].data;
-        xp ? xp : "Unknown";
+        let level = db.get(`level_${message.guild.id}_${id}`);
         leaderboard.push({
-            user: user,
-            rank: rank,
-            level: level,
-            xp: xp
+            user: (user !== undefined || !user) ? user.tag : "Unknown#0000",
+            rank: data.indexOf(data[i]) + 1,
+            level: level !== null ? level : "Unknown",
+            xp: data[i].data ? data[i].data : "Unkown"
         });
     };
 
