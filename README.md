@@ -21,8 +21,10 @@ npm install --save discord-levels
 ## Documentation
 > You will find the complete documentation [here](https://google.com) (*Soon*)
 
-## Méthods
+## Methods
 * addXP
+* removeXP
+* fetch
 * leaderboard
 
 ### addXP
@@ -102,9 +104,14 @@ client.on('message', async (message) => {
 
     if(message.content === settings.prefix + "give") {
         await Levels.addXP(message, message.author.id, 5) // Will add 5 XPs to the author of the message
+    } else if(message.content === settings.prefix + "remove") {
+        await Levels.removeXP(message, message.author.id, 5) // Will remove 5 XPs to the author of the message
+    } else if(message.content.startsWith(settings.prefix + "user")) {
+        let userID = message.content.split(/ +/g)[1];
+        await Levels.fetch(message, userID);
     } else if(message.content === settings.prefix + "!leaderboard") {
         await Levels.leaderboard(client, message);
-    };
+    }
 });
 
 client.login(settings.token);
