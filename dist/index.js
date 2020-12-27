@@ -10,6 +10,18 @@ var db = require("quick.db");
  * @returns {any}
  */
 function addXP(message, userID, XP) {
+    if (!message)
+        throw new Error("You must enter a message parameter, referring to your 'message' event");
+    if (!userID)
+        throw new Error("You must enter a userID parameter, corresponds to the ID of the user who will receive the experience");
+    if (typeof userID !== "string")
+        throw new Error("The userID parameter must be a String");
+    if (!XP)
+        throw new Error("You must enter an XP parameter, corresponds to the experience that will be added");
+    if (XP <= 0)
+        throw new Error("The XP parameter must be greater than 0");
+    if (typeof XP !== "number")
+        throw new Error("The XP parameter must be a Number");
     db.add("xp_" + message.guild.id + "_" + userID, XP);
     return db.get("xp_" + message.guild.id + "_" + userID);
 }
