@@ -12,14 +12,63 @@ export function addXP (message: any, userID: string, XP: number) : any {
     if(!message) throw new Error("You must enter a message parameter, referring to your 'message' event");
     
     if(!userID) throw new Error("You must enter a userID parameter, corresponds to the ID of the user who will receive the experience");
-    if(typeof userID !== "string") throw new Error("The userID parameter must be a String")
+    if(typeof userID !== "string") throw new Error("The userID parameter must be a String");
 
     if(!XP) throw new Error("You must enter an XP parameter, corresponds to the experience that will be added");
-    if(XP <= 0) throw new Error("The XP parameter must be greater than 0")
-    if(typeof XP !== "number") throw new Error("The XP parameter must be a Number")
+    if(XP <= 0) throw new Error("The XP parameter must be greater than 0");
+    if(typeof XP !== "number") throw new Error("The XP parameter must be a Number");
 
     db.add(`xp_${message.guild.id}_${userID}`, XP);
-    return db.get(`xp_${message.guild.id}_${userID}`);
+};
+
+/**
+ * Remove experience to the user
+ * @param {any} message Parameter of your event message 
+ * @param {string} userID ID of the user 
+ * @param {number} XP The experience that will be removed
+ * @returns {any}
+ */
+export function removeXP (message: any, userID: string, XP: number) : any {
+    if(!message) throw new Error("You must enter a message parameter, referring to your 'message' event");
+    
+    if(!userID) throw new Error("You must enter a userID parameter, corresponds to the ID of the user who will loose the experience");
+    if(typeof userID !== "string") throw new Error("The userID parameter must be a String");
+
+    if(!XP) throw new Error("You must enter an XP parameter, corresponds to the experience that will be remove");
+    if(XP <= 0) throw new Error("The XP parameter must be greater than 0");
+    if(typeof XP !== "number") throw new Error("The XP parameter must be a Number");
+
+    db.subtract(`xp_${message.guild.id}_${userID}`, XP);
+};
+
+/**
+ * Allows you to obtain a user's information
+ * @param {any} message Parameter of your event message 
+ * @param {string} userID ID of the user
+ * @returns {any}
+ */
+export function fetch (message: any, userID: string) : any {
+    let embed;
+
+    if(!message) throw new Error("You must enter a message parameter, referring to your 'message' event");
+    
+    if(!userID) throw new Error("You must enter a userID parameter, corresponds to the ID of the user");
+    if(typeof userID !== "string") throw new Error("The userID parameter must be a String");
+
+    const data = {
+        level: db.get(`level_${message.guild.id}_${userID}`) || 1,
+        xp: db.get(`xp_${message.guild.id}_${userID}`) || 0
+    };
+
+    message.guild.members.fetch(userID).then((m: any) => {
+        embed = new MessageEmbed()
+            .setColor("RANDOM")
+            .setAuthor(m.user.tag, m.user.displayAvatarURL({ dynamic: true }))
+            .setThumbnail(m.user.displayAvatarURL({ dynamic: true }))
+            .setDescription("**Level** : `" + data.level + "` \n**XP** : `" + data.xp + "`")
+
+        message.channel.send(embed);
+    }).catch(() => message.channel.send(":x: Unknown user ID."))
 };
 
 /**
