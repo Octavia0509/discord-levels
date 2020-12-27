@@ -1,13 +1,13 @@
 import * as db from 'quick.db'
+import { MessageEmbed } from 'discord.js'
 
 /**
- * Ajoute de l'expérience à l'utilisateur
- * @param {any} message Paramètre de votre événnement message
- * @param {string} userID L'identifiant de l'utilisateur
- * @param {number} XP L'expérience qui sera ajoutée
+ * Adds experience to the user
+ * @param {any} message Parameter of your event message
+ * @param {string} userID ID of the user
+ * @param {number} XP The experience that will be added
  * @returns {any}
  */
-
 export function addXP (message: any, userID: string, XP: number) : any {
     if(!message) throw new Error("You must enter a message parameter, referring to your 'message' event");
     
@@ -20,4 +20,58 @@ export function addXP (message: any, userID: string, XP: number) : any {
 
     db.add(`xp_${message.guild.id}_${userID}`, XP);
     return db.get(`xp_${message.guild.id}_${userID}`);
+};
+
+/**
+ * Returns a ranking of the experience in the server
+ * @param {any} client Discord.js Client 
+ * @param {any} message Parameter of your event message
+ * @param {object} options Object containing options
+ */
+export function leaderboard (client: any, message: any, limit: number) : any {
+    if(!client) throw new Error("You must enter a client parameter (discord.js client)");
+
+    if(!message) throw new Error("You must enter a message parameter, referring to your 'message' event");
+
+    if(!limit) limit = 10;
+    if(typeof limit !== "number") throw new Error("The limit option must be a Number");
+
+    let data = db.all().filter(i => i.ID.startsWith("xp_")).slice(0, limit).sort((a, b) => b.data - a.data);
+    if(data.length < 1) return message.channel.send("It seems that there is no data");
+    let authorRank = data.map(i => i.ID).indexOf(`xp_${message.author.id}`);
+    let leaderboard = [];
+    
+    for (let i in data) {
+        let id = data[i].ID.split("_")[1];
+        let user = client.users.cache.get(id);
+        user ? user.tag : "Unknown#0000";
+        let rank = data.indexOf(data[i]) + 1;
+        let level = db.get(`level_${i}`);
+        level ? level : "Unknown";
+        let xp = data[i].data;
+        xp ? xp : "Unknown";
+        leaderboard.push({
+            user: user,
+            rank: rank,
+            level: level,
+            xp: xp
+        });
+    };
+
+    const embed = new MessageEmbed()
+        .setColor("RANDOM")
+        .setTitle("🙄 Leaderboard");
+
+    leaderboard.forEach(x => {
+        embed.addField(
+            `➔ \`${x.rank}\` • **${x.user}**`,
+            `__Level:__ **\`${x.level}\`** • __XP:__ **\`${x.xp}\`**`,
+            false
+        );
+    });
+
+    embed.setFooter("You are at the position " + authorRank, message.guild.iconURL({ dynamic: true }));
+
+    message.channel.send(embed);
+
 };
