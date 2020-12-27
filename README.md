@@ -26,7 +26,7 @@ npm install --save discord-levels
 * leaderboard
 
 ### addXP
-**Allows you to add experience to a given user**
+> Allows you to add experience to a given user
 
 *Parameters:*
 | Name          | Type      | Required  |
@@ -40,8 +40,37 @@ npm install --save discord-levels
 * **userID** ➔ ID of the user
 * **XP** ➔ The experience that will be added
 
+### removeXP
+> Allows you to remove experience to a given user
+
+*Parameters:*
+| Name          | Type      | Required  |
+|:-------------:|:---------:|:---------:|
+| **message**   | `any`     | true      |
+| **userID**    | `string`  | true      |
+| **XP**        | `number`  | true      |
+
+*Matches :*
+* **message** ➔ Parameter of your event message
+* **userID** ➔ ID of the user
+* **XP** ➔ The experience that will be removed
+
+### fetch
+> Allows you to obtain a user's information
+
+*Parameters:*
+| Name          | Type      | Required  |
+|:-------------:|:---------:|:---------:|
+| **message**   | `any`     | true      |
+| **userID**    | `string`  | true      |
+
+*Matches :*
+* **message** ➔ Parameter of your event message
+* **userID** ➔ ID of the user
+
+
 ### leaderboard
-**Generates a server ranking, sorted by experience**
+> Generates a server ranking, sorted by experience
 
 *Parameters:*
 | Name          | Type      | Required  |
