@@ -36,9 +36,9 @@ npm install --save discord-levels
 | **XP**        | `number`  | true      |
 
 *Matches :*
-**message** ➔ Parameter of your event message
-**userID** ➔ ID of the user
-**XP** ➔ The experience that will be added
+* **message** ➔ Parameter of your event message
+* **userID** ➔ ID of the user
+* **XP** ➔ The experience that will be added
 
 ### leaderboard
 **Generates a server ranking, sorted by experience**
@@ -50,8 +50,8 @@ npm install --save discord-levels
 | **message**   | `any`     | true      |
 
 *Matches :*
-**client** ➔ Discord.js Client
-**message** ➔ Parameter of your event message
+* **client** ➔ Discord.js Client
+* **message** ➔ Parameter of your event message
 
 ## Example of use
 ```js
@@ -71,9 +71,9 @@ client.on('message', async (message) => {
     if(!message.content.startsWith(settings.prefix)) return;
     if(message.author.bot || !message.guild) return;
 
-    if(message.content === "!give") {
+    if(message.content === settings.prefix + "give") {
         await Levels.addXP(message, message.author.id, 5) // Will add 5 XPs to the author of the message
-    } else if(message.content === "!leaderboard") {
+    } else if(message.content === settings.prefix + "!leaderboard") {
         await Levels.leaderboard(client, message);
     };
 });
