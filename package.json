@@ -1,0 +1,33 @@
+{
+  "name": "discord-levels",
+  "version": "0.0.1",
+  "description": "A package that allows you to create a complete level system on your discord bot",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Octavia0509/discord-levels.git"
+  },
+  "keywords": [
+    "discord-levels",
+    "levels",
+    "leveling",
+    "discord-leveling",
+    "ranks"
+  ],
+  "author": "Lucas D.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Octavia0509/discord-levels/issues"
+  },
+  "homepage": "https://github.com/Octavia0509/discord-levels#readme",
+  "devDependencies": {
+    "typescript": "^4.1.3"
+  },
+  "dependencies": {
+    "quick.db": "^7.1.3"
+  }
+}
