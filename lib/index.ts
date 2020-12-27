@@ -26,7 +26,7 @@ export function addXP (message: any, userID: string, XP: number) : any {
  * Returns a ranking of the experience in the server
  * @param {any} client Discord.js Client 
  * @param {any} message Parameter of your event message
- * @param {object} options Object containing options
+ * @returns {any}
  */
 export function leaderboard (client: any, message: any) : any {
     if(!client) throw new Error("You must enter a client parameter (discord.js client)");
