@@ -84,6 +84,25 @@ npm install --save discord-levels
 * **client** ➔ Discord.js Client
 * **message** ➔ Parameter of your event message
 
+
+### Rankcard
+> Generate a ranking map, with lots of information (see example below)
+
+*Parameters:*
+| Name          | Type      | Required  |
+|:-------------:|:---------:|:---------:|
+| **message**   | `any`     | true      |
+| **userID**    | `string`  | true      |
+
+*Matches :*
+* **message** ➔ Parameter of your event message
+* **userID** ➔ ID of the user
+
+*Example:*
+<center>
+    <img src="https://cdn.discordapp.com/attachments/740600104989360200/793576321065418752/rank.png" alt="Example RANKCARD">
+</center>
+
 ## Example of use
 ```js
 const { Client } = require('discord.js');
@@ -109,9 +128,11 @@ client.on('message', async (message) => {
     } else if(message.content.startsWith(settings.prefix + "user")) {
         let userID = message.content.split(/ +/g)[1];
         await Levels.fetch(message, userID);
-    } else if(message.content === settings.prefix + "!leaderboard") {
+    } else if(message.content === settings.prefix + "leaderboard") {
         await Levels.leaderboard(client, message);
-    }
+    } else if(message.content === settings.prefix + "rank") {
+        await Levels.Rankcard(message, message.author.id);
+    };
 });
 
 client.login(settings.token);
