@@ -19,7 +19,7 @@ npm install --save discord-levels
 ```
 
 ## Documentation
-> You will find the complete documentation [here](https://com) (*Soon*)
+> You will find the complete documentation [here](https://octavia0509.github.io/discord-levels/)
 
 ## Example of use
 ```js
