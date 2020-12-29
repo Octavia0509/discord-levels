@@ -28,3 +28,10 @@ export declare function fetch(message: any, userID: string): any;
  * @returns {any}
  */
 export declare function leaderboard(client: any, message: any): any;
+/**
+ * Returns a rankcard
+ * @param {any} message Parameter of your event message
+ * @param {string} userID The ID of the user
+ * @returns {any}
+ */
+export declare function Rankcard(message: any, userID: string): any;
